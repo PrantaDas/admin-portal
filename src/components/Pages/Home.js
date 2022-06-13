@@ -1,5 +1,6 @@
 import React from 'react';
 import Typewriter from 'typewriter-effect'
+import {Link} from 'react-router-dom'
 
 const Home = () => {
     return (
@@ -14,8 +15,8 @@ const Home = () => {
                         }}
                     /></h1>
                     <div className='p-3 flex justify-around gap-4'>
-                        <div><button className="btn btn-primary text-white font-bold ">Get Started</button></div>
-                        <div><button className="btn btn-primary text-white font-bold ">Dashboard</button></div>
+                        <div><Link to='/dashboard'><button className="btn btn-primary text-white font-bold ">Get Started</button></Link></div>
+                        <div><Link to='/dashboard'><button className="btn btn-primary text-white font-bold ">Dashboard</button></Link></div>
                     </div>
                 </div>
 

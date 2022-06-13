@@ -6,8 +6,11 @@ import auth from '../firebase.init';
 import { RiErrorWarningLine } from "react-icons/ri";
 
 const Login = () => {
+    const location = useLocation();
 
     const { register, formState: { errors }, handleSubmit } = useForm();
+
+    let from = location.state?.from?.pathname || "/";
 
     const navigate = useNavigate();
 
@@ -36,8 +39,7 @@ const Login = () => {
     let signInError;
 
     if (user || guser) {
-        console.log(user || guser);
-        navigate('/');
+        navigate(from, { replace: true });
     };
 
     if (error) {

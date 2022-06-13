@@ -20,6 +20,7 @@ const AllEmployees = () => {
     return (
         <div>
             <div className='w-full my-4'>
+                <h3 className='text-2xl font-bld font-mono inline-block p-2'>Search a Employe:</h3>
                 <div className='px-3 inline-block'><input onChange={(event) => {
                     setSearched(event.target.value)
                 }} type="text" placeholder="Search Employee" name='search' class="input input-bordered input-secondary w-full max-w-2xl" /></div>

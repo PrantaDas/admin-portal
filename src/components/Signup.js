@@ -1,13 +1,21 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init'
 import { RiErrorWarningLine } from "react-icons/ri";
 import { BiErrorCircle } from "react-icons/bi";
 
 const Signup = () => {
+    const location = useLocation();
+
+
+
+    let from = location.state?.from?.pathname || "/";
+
+
     const { register, formState: { errors }, handleSubmit } = useForm();
+
     const navigate = useNavigate()
     const [
         createUserWithEmailAndPassword,
@@ -35,8 +43,7 @@ const Signup = () => {
     }
 
     if (user || guser) {
-        console.log(user || guser);
-        navigate('/');
+        navigate(from, { replace: true });
     };
 
     let signinError;
