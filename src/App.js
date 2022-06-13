@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import Dashboard from './components/Dashboard';
 import Analytics from './components/Analytics';
 import AllEmployees from './components/AllEmployees';
+import RequireAuth from './components/RequireAuth';
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
         <Route path='/' element={<Home></Home>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
         <Route path='/signup' element={<Signup></Signup>}></Route>
-        <Route path='/dashboard' element={<Dashboard></Dashboard>}>
+        <Route path='/dashboard' element={<RequireAuth>
+          <Dashboard></Dashboard>
+        </RequireAuth>}>
           <Route index element={<Analytics></Analytics>}></Route>
           <Route path='/dashboard/employees' element={<AllEmployees></AllEmployees>}></Route>
         </Route>
