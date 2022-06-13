@@ -6,6 +6,8 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Footer from './components/Footer';
 import Dashboard from './components/Dashboard';
+import Analytics from './components/Analytics';
+import AllEmployees from './components/AllEmployees';
 
 function App() {
   return (
@@ -15,7 +17,10 @@ function App() {
         <Route path='/' element={<Home></Home>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
         <Route path='/signup' element={<Signup></Signup>}></Route>
-        <Route path='/dashboard' element={<Dashboard></Dashboard>}></Route>
+        <Route path='/dashboard' element={<Dashboard></Dashboard>}>
+          <Route index element={<Analytics></Analytics>}></Route>
+          <Route path='/dashboard/employees' element={<AllEmployees></AllEmployees>}></Route>
+        </Route>
       </Routes>
       <Footer></Footer>
     </div>

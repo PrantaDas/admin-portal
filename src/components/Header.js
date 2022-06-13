@@ -1,9 +1,9 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../firebase.init';
 import { signOut } from 'firebase/auth';
-import { CgProfile } from "react-icons/cg";
+
 
 const Header = () => {
     const [user, loading, error] = useAuthState(auth);
@@ -33,7 +33,7 @@ const Header = () => {
         }
     </>
     return (
-        <div class="navbar bg-base-100 sticky top-0">
+        <div class="navbar bg-base-100 sticky top-0 lg:px-12 lg:py-4 flex justify-center md:justify-between">
             <div class="navbar-start">
                 <div class="dropdown">
                     <label tabindex="0" class="btn btn-ghost lg:hidden">

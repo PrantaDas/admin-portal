@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { SiGoogleanalytics } from "react-icons/si";
+import { FaUserFriends } from "react-icons/fa";
 
 const Dashboard = () => {
     return (
@@ -13,25 +15,11 @@ const Dashboard = () => {
             <div className="drawer-side">
                 <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
                 <ul className="menu p-4 overflow-y-auto w-56 bg-base-100 text-base-content">
-                    {/* {
-                        !users && <>
-                            <li><Link className='font-normal' to='/dashboard/myorder'><AiOutlineGift />My Order</Link></li>
-                            <li><Link className='font-normal' to='/dashboard/addreview'><MdOutlineRateReview className='mt-1' />Add a Review</Link></li>
-                        </>
-                    }
-                    <li><Link className='font-normal' to='/dashboard/myprofile'><CgProfile />My Profile</Link></li>
-                    {
-                        admin && <>
-                            <li><Link className='font-normal' to='/dashboard/makeadmin'><RiAdminLine />Make Admin</Link></li>
-                            <li><Link className='font-normal' to='/dashboard/addproduct'><MdAddCircleOutline />Add Product</Link></li>
-                            <li><Link className='font-normal' to='/dashboard/manageproduct'><MdOutlineEditRoad />Manage Products</Link></li>
-                            <li><Link className='font-normal' to='/dashboard/manageorders'><RiListUnordered />Manage Orders</Link></li>
-                        </>
-                    } */}
+                    <li><Link className='font-serif' to='/dashboard'><SiGoogleanalytics/> Analytics</Link></li>
+                    <li><Link className='font-serif' to='/dashboard/employees'><FaUserFriends/> All Employees</Link></li>
                 </ul>
             </div>
         </div>
-
     </div>
     );
 };
