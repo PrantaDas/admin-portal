@@ -1,86 +1,69 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
-import auth from '../firebase.init'
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useForm } from "react-hook-form";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import auth from '../firebase.init';
 import { RiErrorWarningLine } from "react-icons/ri";
-import { BiErrorCircle } from "react-icons/bi";
 
-const Signup = () => {
+const Login = () => {
+
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const navigate = useNavigate()
+
+    const navigate = useNavigate();
+
     const [
-        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
         user,
         loading,
         error,
-    ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+    ] = useSignInWithEmailAndPassword(auth);
 
     const [signInWithGoogle, guser, gloading, gerror] = useSignInWithGoogle(auth);
 
-    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
-
     const onSubmit = async data => {
         console.log(data);
-        await createUserWithEmailAndPassword(data.email, data.password);
-        await updateProfile({ displayName: data.name });
+        await signInWithEmailAndPassword(data.email, data.password);
     };
 
-    const handleSigninWithGoogle = () => {
+    const handleSigininWithGoogle = () => {
         signInWithGoogle();
     };
 
-    if (loading || gloading || updating) {
-        return (<p className='text-pirmary'>Signin in....</p>)
-    }
+    if (loading || gloading) {
+        return (<p className='text-primary'>Loging In...</p>)
+    };
+
+    let signInError;
 
     if (user || guser) {
         console.log(user || guser);
         navigate('/');
     };
 
-    let signinError;
-
     if (error) {
-        const errorMessage = error?.message;
-        if (errorMessage.includes('auth/email-already-in-use')) {
-            signinError = <small className='text-error'><BiErrorCircle className='inline' /> An account already exist with the email</small>;
-        }
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        if (errorMessage.includes('auth/user-not-found')) {
+            signInError = <small className='py-2 text-red-700'><RiErrorWarningLine className='inline' /> User Not Found</small>;
+        };
+        if (errorMessage.includes('auth/wrong-password')) {
+            signInError = <small className='py-2 text-red-700'><RiErrorWarningLine className='inline' /> Invalid Password</small>;
+        };
     };
-
     if (gerror) {
         const errorMessage = gerror?.message;
         if (errorMessage.includes('auth/popup-closed-by-user')) {
-            signinError = <small className='text-error'><RiErrorWarningLine className='inline' /> Failed! Popup closed by user</small>;
+            signInError = <small className='text-error'><RiErrorWarningLine className='inline' /> Failed! Popup closed by user</small>;
         }
     };
 
     return (
-        <section>
-            <div className='flex justify-center h-[90vh] items-center'>
+        <div>
+            <div className='flex justify-center h-[80vh] items-center'>
                 <div className="card w-96 bg-base-100 shadow-xl">
                     <div className="card-body">
-                        <h2 className="text-center text-2xl font-bold">Sign Up</h2>
+                        <h2 className="text-center text-2xl font-bold">Login</h2>
                         <form form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="form-control w-full max-w-xs">
-                                <label className="label">
-                                    <span className="label-text font-bold text-sm">Name</span>
-                                </label>
-                                <input type="text" {...register("name", {
-                                    required: {
-                                        value: true,
-                                        message: 'Name is Required'
-                                    }
-                                })}
-                                    placeholder="Type Your Name"
-                                    className="input input-bordered w-full max-w-sm"
-                                />
-
-                                <label className="label">
-                                    {errors.name?.type === 'required' && <span className="label-text-alt text-red-700">{errors.name.message}</span>}
-                                </label>
-                            </div>
-
                             <div className="form-control w-full max-w-xs">
                                 <label className="label">
                                     <span className="label-text font-bold text-sm">Email</span>
@@ -132,25 +115,25 @@ const Signup = () => {
                                 <label className="label">
                                     <span className="label-text text-xs hover:underline hover:text-red-700" role='button'>Forget Password?</span>
                                 </label>
-                                <input className='btn bg-accent tracking-wide text-lg' type="submit" value="SIGNUP" />
-                                <p className='py-2'><small className='font-bold px-1'>Already Have an Account?</small><small className='text-secondary  hover:underline' role='button'><Link to='/login'>Login Here</Link></small></p>
-                            </div>
+                                <input className='btn bg-accent tracking-wide text-lg' type="submit" value="LOGIN" />
 
+                                <p className='py-2'><small className='font-bold px-1'>New to Doctors Portal?</small><small className='text-secondary  hover:underline' role='button'><Link to='/signup'>Create new account</Link></small></p>
+                            </div>
+                            {
+                                signInError
+                            }
                         </form>
                         <div className="divider">OR</div>
                         <div>
-                            <button onClick={handleSigninWithGoogle} className="btn btn-active btn-ghost btn-block tracking-wide text-lg">CONTINUE WITH GOOGLE</button>
+                            <button onClick={handleSigininWithGoogle} className="btn btn-active btn-ghost btn-block tracking-wide text-lg">CONTINUE WITH GOOGLE</button>
 
                         </div>
-                        {
-                            signinError
-                        }
                     </div>
                 </div>
 
             </div>
-        </section>
+        </div>
     );
 };
 
-export default Signup;
+export default Login;

@@ -1,9 +1,36 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../firebase.init';
+import { signOut } from 'firebase/auth';
+import { CgProfile } from "react-icons/cg";
 
 const Header = () => {
+    const [user, loading, error] = useAuthState(auth);
+
+    if (loading) {
+        return (<p className='text-primary'>Loading...</p>)
+    };
+
+    const handleSignout = () => {
+        signOut(auth);
+    };
+
+    const avatarName = user?.displayName?.substring(0, 1)
+
     const navitem = <>
-    <NavLink></NavLink>
+        {
+            user && <li><Link to='/dashboard/myprofile'><div class="avatar placeholder">
+                <div class="bg-neutral-focus text-neutral-content rounded-full w-8 indicator">
+                    <div class="text-xs">{avatarName}</div>
+                </div>
+            </div>
+            </Link></li>
+        }
+
+        {
+            user ? <li><Link className='font-bold' onClick={handleSignout} to='/login'>SignOut</Link></li> : <li className='font-bold'><Link to='/signup'>Login</Link></li>
+        }
     </>
     return (
         <div class="navbar bg-base-100">
@@ -23,7 +50,7 @@ const Header = () => {
                     {navitem}
                 </ul>
             </div>
-            
+
         </div>
     );
 };
