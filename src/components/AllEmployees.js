@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 
 const AllEmployees = () => {
     const [employees, setEmployees] = useState([]);
-    const [searched, setSearched] = useState([]);
+
+    const [searched, setSearched] = useState("");
+
 
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/users')
@@ -11,28 +13,20 @@ const AllEmployees = () => {
             .then(data => {
                 console.log(data);
                 setEmployees(data);
-                setSearched(data);
             })
     }, [])
 
-    const handleSearchbyName = (event) => {
-        event.preventDefault();
-        const searchWord = event.target.search.value;
-        const filtered = employees.filter(e => e.name.includes(searchWord));
-        setEmployees(filtered);
-        event.target.reset();
-    };
+
     return (
         <div>
             <div className='w-full my-4'>
-                <form onSubmit={handleSearchbyName}>
-                    <div className='px-3 inline-block'><input type="text" placeholder="Type here" name='search' class="input input-bordered w-full max-w-xs" /></div>
-                    <input className='btn btn-secondary' type="submit" value="Search" />
-                </form>
+                <div className='px-3 inline-block'><input onChange={(event) => {
+                    setSearched(event.target.value)
+                }} type="text" placeholder="Search Employee" name='search' class="input input-bordered input-secondary w-full max-w-2xl" /></div>
             </div>
+
             <div class="overflow-x-auto">
                 <table class="table w-full">
-
                     <thead>
                         <tr>
                             <th></th>
@@ -42,10 +36,17 @@ const AllEmployees = () => {
                     </thead>
                     <tbody>
                         {
-                            employees.map((e, index) => <tr key={e.id}>
+                            employees.filter((em) => {
+                                if (searched === "") {
+                                    return em
+                                }
+                                else if (em.name.toLowerCase().includes(searched.toLowerCase())) {
+                                    return em
+                                }
+                            }).map((em,index) =><tr key={em.id}>
                                 <th>{index + 1}</th>
-                                <td>{e.name}</td>
-                                <td>{e.address.city}</td>
+                                <td>{em.name}</td>
+                                <td>{em.address.city}</td>
                             </tr>)
                         }
 
@@ -57,3 +58,4 @@ const AllEmployees = () => {
 };
 
 export default AllEmployees;
+
